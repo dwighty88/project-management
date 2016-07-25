@@ -6,14 +6,22 @@ var blobStream = require('blob-stream');
 var fs = require('fs');
 var PDFDocument = require('pdfkit');
 
+var doc = new PDFDocument();
+
 var id = "153629";
 
-// var mysql = require('mysql');
-/*
-var bodyParser = require('body-parser');
+eName = 'Employee Name'
+headerQuali = 'Summary of Qualifications'
+headerSpec = 'Areas of Specialization'
+headertrain = 'Education and Training'
+headerCareer = 'Career Sypnosis'
+headerExp = 'Project Experience'
 
+
+var id = "153629";
+
+var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-*/
 
 
 function createConn() {
@@ -27,15 +35,39 @@ function createConn() {
 	return connection;
 }
 
-
-/*
 function Project(id, name) {
 	this.id = id;
 	this.name = name;
 }
-*/
+
 
 router.get('/', function(req, res, next) {
+
+    doc.text('Hello World and World again!!',100,100);
+    doc.pipe(res);
+    doc.end();
+    });
+
+    router.get('/:id', function(req, res, next) {
+    doc.pipe(fs.createWriteStream('file.pdf'));
+    doc.fontSize(20);
+    doc.text(eName, {
+      width:410,
+      align:'center'
+     });
+
+    doc.fontSize(12);
+    doc.text(headerQuali,100,90);
+    doc.text(headerSpec,100,120);
+    doc.text(headertrain,100,390);
+    doc.text(headerCareer,100,490);
+    doc.text(headerExp,100,590);
+    doc.pipe(res);
+    doc.end();
+
+});
+
+router.post('/:id', function(req, res) {
 
 	console.log('yyyyyyyyy init');
 	
